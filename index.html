@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu App de Moedas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .app-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .saldo-container {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2ecc71;
+            margin: 20px 0;
+        }
+
+        .btn-ganhar {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-ganhar:active {
+            transform: scale(0.95);
+        }
+
+        .btn-ganhar:hover {
+            background-color: #27ae60;
+        }
+
+        .loja-container {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .btn-upgrade {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .btn-upgrade:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <h1>Coin Clicker</h1>
+        <p>Clique para acumular moedas fictícias!</p>
+        
+        <div class="saldo-container">
+            $ <span id="saldo">0</span>
+        </div>
+
+        <button class="btn-ganhar" id="btnClique">Ganhar Moeda!</button>
+
+        <div class="loja-container">
+            <h3>Melhorias (Upgrades)</h3>
+            <button class="btn-upgrade" id="btnUpgrade">
+                Multiplicador x2 (Custo: $50)
+            </button>
+            <p style="font-size: 12px; color: #7f8c8d; margin-top: 5px;">
+                Cada clique valerá 2 moedas.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Variáveis do jogo
+        let moedas = 0;
+        let valorPorClique = 1;
+        let custoUpgrade = 50;
+
+        // Elementos do HTML
+        const txtSaldo = document.getElementById('saldo');
+        const btnClique = document.getElementById('btnClique');
+        const btnUpgrade = document.getElementById('btnUpgrade');
+
+        // Função para atualizar a tela
+        function atualizarTela() {
+            txtSaldo.innerText = moedas;
+            
+            // Desabilita o botão de upgrade se não tiver moedas suficientes
+            if (moedas >= custoUpgrade) {
+                btnUpgrade.disabled = false;
+            } else {
+                btnUpgrade.disabled = true;
+            }
+        }
+
+        // Evento de clicar para ganhar moedas
+        btnClique.addEventListener('click', () => {
+            moedas += valorPorClique;
+            atualizarTela();
+        });
+
+        // Evento de comprar o upgrade
+        btnUpgrade.addEventListener('click', () => {
+            if (moedas >= custoUpgrade) {
+                moedas -= custoUpgrade;
+                valorPorClique = 2; // Agora ganha 2 por clique
+                btnUpgrade.innerText = "Comprado!";
+                btnUpgrade.disabled = true;
+                // Sobrescreve a lógica para o upgrade não ser comprado de novo
+                custoUpgrade = Infinity; 
+                atualizarTela();
+            }
+        });
+
+        // Inicializa a tela com os valores corretos
+        atualizarTela();
+    </script>
+
+</body>
+</html>
